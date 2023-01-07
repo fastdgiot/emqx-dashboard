@@ -6,11 +6,12 @@
 ]}.
 
 {mapping, "dashboard.default_user.password", "emqx_dashboard.default_user_passwd", [
-  {datatype, string}
+  {datatype, string},
+  {override_env, "ADMIN_PASSWORD"}
 ]}.
 
 {mapping, "dashboard.listener.http", "emqx_dashboard.listeners", [
-  {datatype, integer}
+  {datatype, [integer, ip]}
 ]}.
 
 {mapping, "dashboard.listener.http.acceptors", "emqx_dashboard.listeners", [
@@ -38,7 +39,7 @@
 ]}.
 
 {mapping, "dashboard.listener.https", "emqx_dashboard.listeners", [
-  {datatype, integer}
+  {datatype, [integer, ip]}
 ]}.
 
 {mapping, "dashboard.listener.https.acceptors", "emqx_dashboard.listeners", [
@@ -73,6 +74,10 @@
   {datatype, string}
 ]}.
 
+{mapping, "dashboard.listener.https.key_password", "emqx_dashboard.listeners", [
+  {datatype, string}
+]}.
+
 {mapping, "dashboard.listener.https.certfile", "emqx_dashboard.listeners", [
   {datatype, string}
 ]}.
@@ -82,7 +87,7 @@
 ]}.
 
 {mapping, "dashboard.listener.https.verify", "emqx_dashboard.listeners", [
-  {datatype, string}
+  {datatype, atom}
 ]}.
 
 {mapping, "dashboard.listener.https.fail_if_no_peer_cert", "emqx_dashboard.listeners", [
@@ -126,6 +131,7 @@
                         {ciphers, SplitFun(cuttlefish:conf_get(Prefix ++ ".ciphers", Conf, undefined))},
                         {dhfile, cuttlefish:conf_get(Prefix ++ ".dhfile", Conf, undefined)},
                         {keyfile,    cuttlefish:conf_get(Prefix ++ ".keyfile", Conf, undefined)},
+                        {password,   cuttlefish:conf_get(Prefix ++ ".key_password", Conf, undefined)},
                         {certfile,   cuttlefish:conf_get(Prefix ++ ".certfile", Conf, undefined)},
                         {cacertfile, cuttlefish:conf_get(Prefix ++ ".cacertfile", Conf, undefined)},
                         {verify,     cuttlefish:conf_get(Prefix ++ ".verify", Conf, undefined)},
@@ -148,4 +154,3 @@
         end
       end, [http, https]))
 end}.
-
